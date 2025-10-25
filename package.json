@@ -1,0 +1,18 @@
+{
+  "name": "ai-marketing-mvp",
+  "version": "1.0.0",
+  "description": "AI Headline Generator for Boss Gem Corp",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'Build successful, no complex build needed for static HTML.'",
+    "start": "echo 'Running static site.'",
+    "deploy": "echo 'Deploy handled by Netlify.'"
+  },
+  "keywords": [
+    "ai",
+    "marketing",
+    "netlify"
+  ],
+  "author": "Boss Gem Corp AI",
+  "license": "ISC"
+}
