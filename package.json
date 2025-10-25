@@ -14,5 +14,8 @@
     "netlify"
   ],
   "author": "Boss Gem Corp AI",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@google/genai": "^0.1.0"
+  }
 }
