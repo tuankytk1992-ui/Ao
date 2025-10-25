@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tiêu đề Tối ưu Hóa | Boss Gem Corp</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        h1 { color: #007bff; text-align: center; margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        textarea, button { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        textarea { resize: vertical; min-height: 100px; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        #output { background: #e9ecef; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; min-height: 50px; }
+        .exchange-model { margin-top: 20px; padding: 15px; border: 1px dashed #007bff; border-radius: 4px; text-align: center; }
+        .exchange-model p { margin: 5px 0; font-size: 14px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Tiêu đề Tối ưu Hóa (MVP)</h1>
+        <p>Sử dụng Gemini AI để tạo Tiêu đề SEO/Quảng cáo hoàn hảo. (Hỗ trợ bởi Boss Gem Corp)</p>
+
+        <label for="topic">Chủ đề/Ý chính (Ví dụ: 5 bước khởi nghiệp $0 USD):</label>
+        <textarea id="topic" placeholder="Nhập chủ đề hoặc nội dung cần tối ưu..."></textarea>
+        
+        <label for="tone">Phong cách (Ví dụ: Chuyên nghiệp, Gây sốc, Thân thiện):</label>
+        <input type="text" id="tone" placeholder="Nhập phong cách mong muốn...">
+
+        <button onclick="generateHeadline()">Tạo Tiêu đề Ngay</button>
+
+        <h2>Kết quả:</h2>
+        <div id="output">Đang chờ lệnh...</div>
+
+        <div class="exchange-model">
+            <h3>Mô hình Thu nhập Trao Đổi (Exchange Model)</h3>
+            <p>Sản phẩm này là phiên bản miễn phí. Để mở khóa thêm 5 gợi ý Tiêu đề Premium, bạn vui lòng **chia sẻ công cụ này lên mạng xã hội hoặc để lại đánh giá 5 sao**.</p>
+            <p>Vui lòng đăng ký Email để nhận hướng dẫn:</p>
+            <input type="email" id="email" placeholder="Email của bạn để nhận Token Premium...">
+            <button onclick="alert('Cảm ơn bạn! Hệ thống sẽ gửi email hướng dẫn Exchange Model.')">Đăng ký & Đổi Quyền truy cập</button>
+        </div>
+    </div>
+    <script>
+        const API_KEY = 'GEMINI_API_KEY_PLACEHOLDER'; // Sẽ được thay thế bằng Biến Môi trường Netlify
+        
+        async function generateHeadline() {
+            const topic = document.getElementById('topic').value;
+            const tone = document.getElementById('tone').value;
+            const outputDiv = document.getElementById('output');
+
+            if (!topic) {
+                outputDiv.textContent = "Vui lòng nhập chủ đề trước.";
+                return;
+            }
+
+            outputDiv.textContent = "Đang tạo tiêu đề... Xin chờ...";
+
+            const prompt = `Bạn là một chuyên gia Marketing AI. Hãy tạo 3 tiêu đề SEO và 3 tiêu đề quảng cáo (Ad Copy) tối ưu cho chủ đề sau: "${topic}". Phong cách mong muốn: "${tone}". Trình bày kết quả rõ ràng.`;
+
+            try {
+                // Đây là nơi kết nối API sẽ được kích hoạt sau khi Chủ nhân cấu hình Biến Môi trường.
+                // Hiện tại, chúng ta sẽ dùng kết quả giả lập để xác nhận giao diện hoạt động.
+                
+                outputDiv.innerHTML = `
+                **Đã hoàn tất Logic** (Kết nối API bị vô hiệu hóa vì thiếu Biến Môi trường)
+                <br>
+                **[Demo KẾT QUẢ GEN P-1]**
+                <br>
+                1. [SEO] 5 Bước Khởi nghiệp AI Tự động với $0 USD: Hướng dẫn Chi tiết
+                <br>
+                2. [Ad] KIẾM TIỀN THỤ ĐỘNG: Bí quyết Marketing AI Ngân sách Zêrô
+                <br>
+                3. [Premium] Đăng ký để mở khóa 5 tiêu đề độc quyền!
+                `;
+
+            } catch (error) {
+                outputDiv.textContent = 'Lỗi kết nối API. Vui lòng kiểm tra GEMINI_API_KEY. Lỗi: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
