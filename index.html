@@ -79,6 +79,36 @@
                 outputDiv.textContent = 'Lỗi kết nối API. Vui lòng kiểm tra GEMINI_API_KEY. Lỗi: ' + error.message;
             }
         }
-    </script>
-</body>
-</html>
+    <script>
+    async function generateHeadline() {
+        const topic = document.getElementById('topic').value;
+        const tone = document.getElementById('tone').value;
+        const outputDiv = document.getElementById('output');
+
+        if (!topic) {
+            outputDiv.textContent = "Vui lòng nhập chủ đề trước.";
+            return;
+        }
+
+        outputDiv.textContent = "Đang tạo tiêu đề... (Sử dụng Netlify Function)...";
+
+        try {
+            // Gọi đến Netlify Function mới
+            const response = await fetch('/.netlify/functions/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, tone }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                outputDiv.textContent = data.result;
+            } else {
+                outputDiv.textContent = 'Lỗi kết nối Serverless. Lỗi: ' + (data.error || 'Không rõ.');
+            }
+        } catch (error) {
+            outputDiv.textContent = 'Lỗi kết nối mạng: ' + error.message;
+        }
+    }
+</script>
