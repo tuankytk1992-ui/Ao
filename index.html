@@ -3,158 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ thống AI Tự sinh khối - 6 Công cụ (Tăng Traffic)</title>
+    <title>Master Agent V4.1 - AI Tools</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f7f9fc; color: #333; margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); }
-        h1 { color: #8e24aa; text-align: center; margin-bottom: 25px; } 
-        .tool-selector button { background-color: #e9ecef; color: #495057; border: none; padding: 10px 15px; margin: 5px 3px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s, color 0.3s; font-weight: 600; font-size: 14px; }
-        .tool-selector button.active { background-color: #8e24aa; color: white; box-shadow: 0 4px 8px rgba(142, 36, 170, 0.3); }
-        .tool-selector { text-align: center; margin-bottom: 25px; }
-        textarea, input[type="email"] { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #ced4da; border-radius: 8px; box-sizing: border-box; font-size: 16px; transition: border-color 0.3s; }
-        textarea:focus, input[type="email"]:focus { border-color: #8e24aa; outline: none; }
-        button#generateBtn { background-color: #ff9800; color: white; padding: 15px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s; width: 100%; }
-        button#generateBtn:hover { background-color: #fb8c00; }
-        .result-box { margin-top: 25px; padding: 20px; background-color: #fce4ec; border-radius: 8px; border: 1px solid #f8bbd0; white-space: pre-wrap; word-wrap: break-word; min-height: 100px; }
-        .loading { text-align: center; padding: 20px; font-weight: 600; color: #8e24aa; }
-        .ad-placeholder { background-color: #ccc; height: 90px; line-height: 90px; text-align: center; color: #666; font-size: 14px; margin-bottom: 20px; border-radius: 8px; }
-        .affiliate-notice { background-color: #e0f7fa; border: 1px solid #b2ebf2; padding: 10px; margin-top: 15px; border-radius: 8px; font-size: 14px; text-align: center; }
+        body { font-family: Arial, sans-serif; background-color: #121212; color: #e0e0e0; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: #1f1f1f; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); }
+        h1 { color: #bb86fc; text-align: center; margin-bottom: 30px; }
+        .tool-selector { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .tool-selector button { padding: 10px 20px; background-color: #3700b3; color: white; border: none; border-radius: 6px; cursor: pointer; transition: background-color 0.3s; font-weight: bold; }
+        .tool-selector button:hover { background-color: #6200ee; }
+        .tool-selector button.active { background-color: #03dac6; color: #121212; }
+        .input-group, .email-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #03dac6; font-weight: bold; }
+        textarea, input[type="email"] { width: 100%; padding: 12px; border: 1px solid #333; border-radius: 6px; background-color: #2c2c2c; color: white; resize: vertical; box-sizing: border-box; font-size: 16px; }
+        .button-group { text-align: center; }
+        .button-group button { padding: 12px 25px; background-color: #03dac6; color: #121212; border: none; border-radius: 6px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s; }
+        .button-group button:hover { background-color: #01a398; }
+        .output-box { background-color: #2c2c2c; padding: 15px; border-radius: 6px; min-height: 100px; margin-top: 25px; white-space: pre-wrap; word-wrap: break-word; border: 1px solid #333; }
+        .loading { text-align: center; color: #bb86fc; font-weight: bold; margin-top: 15px; display: none; }
+        .error { color: #cf6679; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hệ thống Tự sinh khối AI - 6 Công cụ (Ký Ức Bot Đã Kích Hoạt)</h1>
-        
-        <div class="ad-placeholder" id="top-ad">Mã Quảng cáo (CPC/CPM) sẽ hiển thị ở đây.</div>
 
-        <div class="tool-selector" id="toolSelector">
-            <button data-tool="TITLE_AI" class="active">Tạo Tiêu đề SEO</button>
-            <button data-tool="SUMMARY_AI">Tóm tắt Văn bản</button>
-            <button data-tool="REPHRASE_AI">Viết lại Câu</button>
+<div class="container">
+    <h1>Master Agent AI V4.1</h1>
 
-            <button data-tool="ZODIAC_ANALYSIS">Phân tích Tử Vi</button>
-            <button data-tool="TAROT_READING">Giải mã Vận số</button>
-            <button data-tool="CHRISTMAS_WISH">Thông điệp Giáng Sinh</button>
-        </div>
-
-        <textarea id="promptInput" rows="6" placeholder="Nhập từ khóa, đoạn văn, cung hoàng đạo, hoặc câu hỏi của bạn vào đây..."></textarea>
-        
-        <input type="email" id="emailInput" placeholder="Nhập Email để nhận kết quả và mở khóa tính năng (Bắt buộc)">
-
-        <button id="generateBtn">Tạo Nội dung AI Huyền Bí</button>
-
-        <div id="loading" class="loading" style="display:none;">Đang tạo nội dung, xin chờ... Vận số đang được giải mã!</div>
-        
-        <div class="result-box" id="resultBox">Kết quả AI sẽ hiển thị ở đây.</div>
-        
-        <div class="affiliate-notice">
-            Muốn nội dung của bạn đạt đến sự hoàn hảo? Hãy sử dụng công cụ tối ưu hóa nội dung hàng đầu: 
-            <a href="https://affiliate-link-cua-ban.com" target="_blank">Surfer SEO</a>.
-        </div>
+    <div class="tool-selector" id="toolSelector">
+        <button data-tool="Tool 1: SEO Title" class="active">1. SEO/Content</button>
+        <button data-tool="Tool 2: Summary">2. Tóm tắt</button>
+        <button data-tool="Tool 3: Rephrase">3. Viết lại</button>
+        <button data-tool="Tool 4: Zodiac">4. Tử Vi</button>
+        <button data-tool="Tool 5: Tarot Reading">5. Đọc Tarot</button>
+        <button data-tool="Tool 6: XMAS Wishes">6. Lời Chúc</button>
     </div>
 
-    <script>
-        // Bot 2: Memory Agent (Apps Script URL MỚI của Chủ nhân)
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWErRiGafz0Ila4xrQdDguI4HSL_Tu4lpwinSACrP-LcnOc9mSebNGI9o-cNttTZvE3g/exec';
-        
-        let currentTool = 'TITLE_AI';
-        const generateBtn = document.getElementById('generateBtn');
-        const promptInput = document.getElementById('promptInput');
-        const emailInput = document.getElementById('emailInput');
-        const resultBox = document.getElementById('resultBox');
-        const loadingDiv = document.getElementById('loading');
-        const toolSelector = document.getElementById('toolSelector');
+    <div class="input-group">
+        <label for="prompt">Nhập nội dung/yêu cầu:</label>
+        <textarea id="prompt" rows="8" placeholder="Dán nội dung cần xử lý hoặc nhập câu hỏi (Tối đa 2000 ký tự)"></textarea>
+    </div>
 
-        toolSelector.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
-                document.querySelectorAll('.tool-selector button').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                currentTool = e.target.getAttribute('data-tool');
-                promptInput.placeholder = getPlaceholder(currentTool);
-                resultBox.innerHTML = 'Kết quả AI sẽ hiển thị ở đây.';
-            }
-        });
+    <div class="email-group">
+        <label for="email">Email nhận thông báo/kết quả (Bắt buộc):</label>
+        <input type="email" id="email" placeholder="email@example.com" required>
+    </div>
 
-        function getPlaceholder(tool) {
-            switch (tool) {
-                case 'TITLE_AI':
-                    return 'Nhập từ khóa hoặc chủ đề bạn muốn tạo tiêu đề...';
-                case 'SUMMARY_AI':
-                    return 'Dán đoạn văn bản dài bạn muốn tóm tắt vào đây...';
-                case 'REPHRASE_AI':
-                    return 'Dán câu/đoạn văn bạn muốn viết lại để tránh đạo văn...';
-                case 'ZODIAC_ANALYSIS':
-                    return 'Nhập cung hoàng đạo của bạn (Ví dụ: Bảo Bình, Ma Kết,...)';
-                case 'TAROT_READING':
-                    return 'Đặt câu hỏi cụ thể về Tình yêu, Sự nghiệp hoặc Vận số của bạn...';
-                case 'CHRISTMAS_WISH':
-                    return 'Nhập tên người nhận hoặc mô tả ngắn về mối quan hệ (Ví dụ: bạn gái, đồng nghiệp thân thiết)...';
-                default:
-                    return 'Nhập từ khóa, đoạn văn hoặc câu của bạn vào đây...';
-            }
+    <div class="button-group">
+        <button id="generateBtn">Tạo Kết Quả</button>
+    </div>
+
+    <div class="loading" id="loadingDiv">Đang xử lý bởi Agent... Vui lòng chờ 5-15 giây</div>
+
+    <div class="output-box" id="resultBox">Kết quả sẽ hiển thị ở đây.</div>
+</div>
+
+<script>
+    // ------------------------------------------------------------------------------------------------------------------------------------------
+    // CẤU HÌNH APPS SCRIPT URL: ĐÃ GẮN URL BOT KÝ ỨC MỚI NHẤT VÀ CHÍNH XÁC
+    // ------------------------------------------------------------------------------------------------------------------------------------------
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby9EBXTCA2UaQxWc4HZL-ovaQRE5hFi69FZS8N0P5Wf69sVTUWBv2AOtvY84ZHinakG/exec';
+
+    const generateBtn = document.getElementById('generateBtn');
+    const promptInput = document.getElementById('prompt');
+    const emailInput = document.getElementById('email');
+    const resultBox = document.getElementById('resultBox');
+    const loadingDiv = document.getElementById('loadingDiv');
+    const toolSelector = document.getElementById('toolSelector');
+    let currentTool = "Tool 1: SEO Title"; // Mặc định
+
+    // Lưu thông tin vào Apps Script (Bot Ký Ức)
+    async function logData(email, tool, title) {
+        try {
+            await fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify({ email, tool, title }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+        } catch (e) {
+            console.error('Lỗi log data:', e);
+            // Không cần thông báo lỗi cho người dùng cuối
         }
-        
-        // Bot 2: Memory Agent (Ghi nhận Email)
-        async function logData(email, tool, status = 'NEW_LEAD') {
-            try {
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, tool, status }),
-                });
-                console.log('Data logged successfully');
-            } catch (error) {
-                console.error('Logging Error:', error);
-            }
+    }
+
+    // Xử lý thay đổi công cụ
+    toolSelector.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            document.querySelectorAll('.tool-selector button').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            currentTool = e.target.getAttribute('data-tool');
+            resultBox.innerHTML = 'Kết quả sẽ hiển thị ở đây.';
+            promptInput.placeholder = getPlaceholder(currentTool);
+        }
+    });
+
+    // Cung cấp placeholder theo công cụ
+    function getPlaceholder(tool) {
+        switch (tool) {
+            case "Tool 1: SEO Title": return "Nhập chủ đề cần tạo tiêu đề SEO (ví dụ: Bí quyết nuôi dạy con tuổi teen)";
+            case "Tool 2: Summary": return "Dán bài viết cần tóm tắt (Tối đa 2000 ký tự)";
+            case "Tool 3: Rephrase": return "Dán nội dung cần viết lại (Tối đa 2000 ký tự)";
+            case "Tool 4: Zodiac": return "Nhập ngày/tháng/năm sinh của bạn (ví dụ: 15/05/1990)";
+            case "Tool 5: Tarot Reading": return "Đặt câu hỏi về tình yêu, công việc hoặc cuộc sống (ví dụ: Tuần này tôi nên tập trung vào điều gì?)";
+            case "Tool 6: XMAS Wishes": return "Nhập tên người nhận và mối quan hệ (ví dụ: Ông bà, Anh A)";
+            default: return "Dán nội dung cần xử lý hoặc nhập câu hỏi (Tối đa 2000 ký tự)";
+        }
+    }
+
+    // Hàm chính gọi Netlify Function
+    generateBtn.addEventListener('click', async () => {
+        const prompt = promptInput.value.trim();
+        const email = emailInput.value.trim();
+
+        if (!email) {
+            resultBox.innerHTML = '<span class="error">Vui lòng nhập Email để nhận kết quả.</span>';
+            return;
         }
 
-        // Bot 1: Traffic Agent (Gửi yêu cầu tạo nội dung)
-        generateBtn.addEventListener('click', async () => {
-            const prompt = promptInput.value.trim();
-            const email = emailInput.value.trim();
+        if (!prompt && currentTool !== "Tool 6: XMAS Wishes") {
+            resultBox.innerHTML = '<span class="error">Vui lòng nhập nội dung/yêu cầu.</span>';
+            return;
+        }
 
-            if (!prompt || !email) {
-                alert('Vui lòng nhập đầy đủ nội dung và Email để sử dụng công cụ.');
-                return;
-            }
+        loadingDiv.style.display = 'block';
+        generateBtn.disabled = true;
+        resultBox.innerHTML = 'Đang gọi Agent...';
 
-            loadingDiv.style.display = 'block';
-            resultBox.innerHTML = '';
-            generateBtn.disabled = true;
+        try {
+            const response = await fetch('/.netlify/functions/generate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt, tool: currentTool })
+            });
 
-            try {
-                const response = await fetch('/.netlify/functions/generate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, tool: currentTool, email }),
-                });
-
+            if (response.ok) {
                 const data = await response.json();
-
-                if (response.ok) {
-                    resultBox.innerHTML = data.result;
-                    // Log data sau khi tạo nội dung thành công
-                    await logData(email, currentTool, 'USED_TOOL'); 
-                } else {
-                    resultBox.innerHTML = `Lỗi: ${data.error || 'Không thể tạo nội dung.'}`;
-                    // Log data lỗi
-                    await logData(email, currentTool, 'ERROR'); 
-                }
-
-            } catch (error) {
-                resultBox.innerHTML = 'Lỗi kết nối. Vui lòng kiểm tra lại mạng.';
-                // Log data lỗi
-                await logData(email, currentTool, 'ERROR_CONNECTION'); 
-            } finally {
-                loadingDiv.style.display = 'none';
-                generateBtn.disabled = false;
+                resultBox.innerHTML = data.result;
+                await logData(email, currentTool, prompt.substring(0, 100) + '...');
+            } else {
+                resultBox.innerHTML = 'Lỗi kết nối Agent. Vui lòng thử lại sau.';
+                await logData(email, currentTool, prompt.substring(0, 100) + '...');
             }
-        });
-        
-        // Bot 6: Ad Manager (Placeholder) - Chủ nhân sẽ thay thế bằng mã quảng cáo thực tế sau
-    </script>
+        } catch (error) {
+            resultBox.innerHTML = 'Lỗi kết nối Agent. Vui lòng thử lại sau.';
+            await logData(email, currentTool, prompt.substring(0, 100) + '...');
+        } finally {
+            loadingDiv.style.display = 'none';
+            generateBtn.disabled = false;
+        }
+    });
+
+    // Thiết lập placeholder ban đầu
+    promptInput.placeholder = getPlaceholder(currentTool);
+
+</script>
+
 </body>
 </html>
