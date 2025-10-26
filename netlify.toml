@@ -1,5 +1,4 @@
 [build]
 functions = "netlify/functions"
 publish = "."
-# Lệnh Build mạnh mẽ hơn để tránh lỗi dependencies
-command = "npm install && npm run build" 
+command = "npm install"
