@@ -7,6 +7,6 @@
     "start": "netlify dev"
   },
   "dependencies": {
-    "@google/genai": "^0.1.0"
+    "@google/genai": "latest"
   }
 }
