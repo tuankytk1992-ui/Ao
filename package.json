@@ -1,20 +1,11 @@
 {
-  "name": "ai-marketing-mvp",
+  "name": "master-agent-v4",
   "version": "1.0.0",
-  "description": "AI Headline Generator for Boss Gem Corp",
-  "main": "index.html",
+  "description": "Master Agent using Google Gemini API on Netlify Functions",
+  "main": "index.js",
   "scripts": {
-    "build": "echo 'Build successful, no complex build needed for static HTML.'",
-    "start": "echo 'Running static site.'",
-    "deploy": "echo 'Deploy handled by Netlify.'"
+    "start": "netlify dev"
   },
-  "keywords": [
-    "ai",
-    "marketing",
-    "netlify"
-  ],
-  "author": "Boss Gem Corp AI",
-  "license": "ISC",
   "dependencies": {
     "@google/genai": "^0.1.0"
   }
