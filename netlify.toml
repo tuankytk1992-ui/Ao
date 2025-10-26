@@ -1,0 +1,9 @@
+# Cấu hình Build cho các Function (Serverless)
+[build]
+  # Thư mục nơi Netlify sẽ tìm kiếm các Function
+  functions = "netlify/functions"
+  # Thư mục nơi chứa các file tĩnh (files frontend)
+  publish = "." 
+  # Lệnh Build (Cài đặt dependencies cho Function)
+  command = "npm install" 
+``` |
