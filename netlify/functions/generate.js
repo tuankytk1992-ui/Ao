@@ -1,4 +1,4 @@
-// File: netlify/functions/generate.js - CODE V4 (Tích hợp 6 công cụ)
+// File: netlify/functions/generate.js - CODE V4.1 (Không đổi, đã đúng)
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
