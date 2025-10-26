@@ -1,59 +1,87 @@
-// File: netlify/functions/generate.js - CODE V4.1 (Không đổi, đã đúng)
+// ĐÃ SỬA LỖI: Tên gói thư viện đã được đổi từ @google/generative-ai sang @google/genai
+const { GoogleGenAI } = require("@google/genai"); 
 
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+// Khởi tạo Gemini AI Client
+// Key được tự động lấy từ Environment Variable GEMINI_API_KEY trên Netlify
+const ai = new GoogleGenAI({}); 
 
-// Khởi tạo Gemini AI (Sử dụng API Key đã cấu hình trong Netlify)
-const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-// CÁC BOT MASTER GOALS (BỘ CHỈ HUY NỘI DUNG)
-const BOT_MASTER_GOALS = {
-    // 1. Công cụ SEO/Content
-    TITLE_AI: "Write 10 compelling blog post titles in Vietnamese for an article about the user's input. The titles must be optimized for click-through rate (CTR) and curiosity, and be short and impactful.",
-    SUMMARY_AI: "Summarize the following Vietnamese text provided by the user into 3 concise bullet points. The summary must capture the main ideas clearly.",
-    REPHRASE_AI: "Rephrase the following Vietnamese sentence or short paragraph provided by the user. The rephrased version must maintain the original meaning but use completely different wording and structure to avoid plagiarism.",
-
-    // 2. Công cụ Giải trí/Tâm linh (MỚI)
-    ZODIAC_ANALYSIS: "Act as an experienced astrologer. Based on the user's input (a Zodiac Sign, e.g., 'Aries'), write a short, highly engaging, and positive analysis in Vietnamese focusing on their personality strengths, career prospects, and a piece of life advice for the week. Use sophisticated and alluring language.",
-    TAROT_READING: "Act as a mysterious Tarot Card Reader. The user's input is a specific question (e.g., 'Will I find true love?'). Provide a deep, metaphorical, and highly personalized reading in Vietnamese that addresses their question, offering a guiding light for their 'vận số' (destiny). Structure the answer as a poetic prophecy.",
-    CHRISTMAS_WISH: "Generate a beautiful, romantic, and emotionally warm Vietnamese Christmas message/wish (short paragraph) suitable for sending to a loved one. The message must evoke feelings of togetherness, hope, and 'tuyết đầu mùa' (first snow).",
-};
-
+/**
+ * Hàm chính xử lý yêu cầu từ client (index.html)
+ */
 exports.handler = async (event) => {
-    if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            body: JSON.stringify({ error: "Method Not Allowed. Use POST." }),
-        };
+    // Chỉ chấp nhận phương thức POST
+    if (event.httpMethod !== "POST") {
+        return { statusCode: 405, body: "Method Not Allowed" };
     }
 
     try {
-        const { prompt, tool, email } = JSON.parse(event.body);
+        const { prompt, tool } = JSON.parse(event.body);
 
-        if (!prompt || !tool) {
+        if (!prompt && tool !== "Tool 6: XMAS Wishes") {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: "Prompt and Tool are required." }),
+                body: JSON.stringify({ error: "Missing prompt or invalid tool." }),
             };
         }
 
-        const systemInstruction = BOT_MASTER_GOALS[tool];
+        // 1. Định nghĩa System Instruction (Đóng vai)
+        const systemInstruction = `
+            Bạn là một Master AI Agent, chuyên cung cấp các dịch vụ chuyên biệt.
+            - Phản hồi bằng tiếng Việt.
+            - Phản hồi phải trực tiếp, chi tiết, và hữu ích.
+            - Không giải thích về vai trò của bạn hoặc cách bạn hoạt động.
+            - Luôn giữ vai trò của mình trong suốt quá trình phản hồi.
+        `;
 
-        // Bot 5: Content Generator sử dụng Gemini để tạo nội dung
-        const response = await ai.getGenerativeModel({ model: "gemini-2.5-flash", systemInstruction })
-            .generateContent(prompt);
-            
-        const text = response.text.trim();
-        
+        // 2. Định nghĩa Prompt (Yêu cầu) theo từng công cụ
+        let userPrompt;
+        let model = "gemini-2.5-flash"; // Model mặc định
+
+        switch (tool) {
+            case "Tool 1: SEO Title":
+                userPrompt = `Bạn là một chuyên gia SEO/Content. Hãy viết 10 tiêu đề bài viết (Headline) hấp dẫn, độc đáo, giật tít để đạt thứ hạng cao trên Google và thu hút người đọc dựa trên chủ đề sau: "${prompt}"`;
+                break;
+            case "Tool 2: Summary":
+                userPrompt = `Bạn là một biên tập viên. Hãy tóm tắt ngắn gọn và chính xác bài viết sau, giữ nguyên ý chính và loại bỏ chi tiết thừa: "${prompt}"`;
+                break;
+            case "Tool 3: Rephrase":
+                userPrompt = `Bạn là một nhà văn chuyên nghiệp. Hãy viết lại nội dung sau đây một cách mượt mà, sáng tạo và chuyên nghiệp hơn, giữ nguyên ý nghĩa gốc: "${prompt}"`;
+                break;
+            case "Tool 4: Zodiac":
+                userPrompt = `Bạn là một nhà chiêm tinh học. Dựa trên ngày sinh "${prompt}", hãy xác định cung hoàng đạo và cung cấp một phân tích chi tiết về vận mệnh, tình duyên, công việc cho tuần tới của họ.`;
+                break;
+            case "Tool 5: Tarot Reading":
+                userPrompt = `Bạn là một người đọc Tarot. Hãy rút ba lá bài Tarot (Quá khứ, Hiện tại, Tương lai) để trả lời câu hỏi sau: "${prompt}". Giải thích ý nghĩa của mỗi lá bài và đưa ra lời khuyên tổng thể.`;
+                break;
+            case "Tool 6: XMAS Wishes":
+                // prompt là thông tin về người nhận (ví dụ: Ông bà, Anh A)
+                userPrompt = `Bạn là một nhà soạn thảo thư chúc mừng. Hãy viết một lời chúc Giáng sinh ấm áp, chân thành và độc đáo cho ${prompt}. Lời chúc cần dài ít nhất 5 câu.`;
+                break;
+            default:
+                userPrompt = `Hãy trả lời yêu cầu sau: ${prompt}`;
+        }
+
+        // 3. Gọi API Gemini
+        const response = await ai.models.generateContent({
+            model: model,
+            contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+            config: {
+                systemInstruction: systemInstruction,
+                temperature: 0.7, // Độ sáng tạo
+            },
+        });
+
+        // 4. Trả về kết quả cho client
         return {
             statusCode: 200,
-            body: JSON.stringify({ result: text }),
+            body: JSON.stringify({ result: response.text }),
         };
+
     } catch (error) {
-        // Bot 9: Error Handler
-        console.error("AI Generation Error:", error);
+        console.error("Gemini API Error:", error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Internal Server Error during AI generation." }),
+            body: JSON.stringify({ error: "Internal Server Error or Gemini API failed to respond." }),
         };
     }
 };
