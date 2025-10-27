@@ -1,12 +1,23 @@
+// File: package.json (Thư mục Gốc)
 {
-  "name": "master-agent-v4",
+  "name": "cygnus-v3-headless",
   "version": "1.0.0",
-  "description": "Master Agent using Google Gemini API on Netlify Functions",
-  "main": "index.js",
+  "description": "Gemini AI Headless Content Generator for Make.com",
+  "main": "netlify/functions/generate.js",
   "scripts": {
-    "start": "netlify dev"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "gemini",
+    "ai",
+    "netlify",
+    "make"
+  ],
   "dependencies": {
-    "@google/genai": "latest"
-  }
+    "@google/genai": "^0.1.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
 }
