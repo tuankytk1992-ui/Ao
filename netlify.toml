@@ -1,4 +1,6 @@
 [build]
-functions = "netlify/functions"
-publish = "."
-command = "npm install"
+command = "npm install" 
+publish = "public"
+  
+[functions]
+directory = "netlify/functions"
