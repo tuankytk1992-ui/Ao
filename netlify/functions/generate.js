@@ -1,87 +1,96 @@
-// ĐÃ SỬA LỖI: Tên gói thư viện đã được đổi từ @google/generative-ai sang @google/genai
-const { GoogleGenAI } = require("@google/genai"); 
+// File: netlify/functions/generate.js (Bot PYTHIA 2.1)
+// Cần GEMINI_API_KEY trong Netlify Environment Variables
+
+const { GoogleGenAI } = require('@google/genai');
+const fetch = require('node-fetch');
+
+// Lấy Webhook URL từ Make.com mà Chủ nhân đã xác nhận
+const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/akqiouamk0495qep8c4xl3rmp27s8bbd';
 
 // Khởi tạo Gemini AI Client
-// Key được tự động lấy từ Environment Variable GEMINI_API_KEY trên Netlify
-const ai = new GoogleGenAI({}); 
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-/**
- * Hàm chính xử lý yêu cầu từ client (index.html)
- */
-exports.handler = async (event) => {
-    // Chỉ chấp nhận phương thức POST
-    if (event.httpMethod !== "POST") {
-        return { statusCode: 405, body: "Method Not Allowed" };
+// Link Affiliate KIẾM TIỀN CHỦ ĐỘNG
+const AFFILIATE_LINK = 'https://link-kiem-tien-cua-chu-nhan-tai-day.com/affiliate';
+
+exports.handler = async (event, context) => {
+    // 1. Kiểm tra Method
+    if (event.httpMethod !== 'POST') {
+        return {
+            statusCode: 405,
+            body: JSON.stringify({ message: 'Method Not Allowed' }),
+        };
     }
 
     try {
-        const { prompt, tool } = JSON.parse(event.body);
+        // 2. Lấy Prompt từ Google Sheets (dưới dạng JSON)
+        const data = JSON.parse(event.body);
+        const promptFromSheet = data.prompt;
 
-        if (!prompt && tool !== "Tool 6: XMAS Wishes") {
+        if (!promptFromSheet) {
             return {
                 statusCode: 400,
-                body: JSON.stringify({ error: "Missing prompt or invalid tool." }),
+                body: JSON.stringify({ message: 'Thiếu trường "prompt" trong yêu cầu.' }),
             };
         }
+        
+        // 3. TẠO PROMPT GỬI ĐẾN GEMINI
+        const systemInstruction = `Bạn là một chuyên gia viết nội dung kiếm tiền online. Nhiệm vụ của bạn là viết một bài đăng Facebook cực kỳ thu hút, dựa trên chủ đề xu hướng. Bài viết PHẢI HẤP DẪN, GÂY TÒ MÒ, và KHÔNG được vượt quá 350 từ. CUỐI BÀI viết phải có LỜI KÊU GỌI HÀNH ĐỘNG (CTA) rõ ràng, hướng người đọc đến Link Affiliate.
+        
+        Bạn chỉ được phép trả về nội dung dưới dạng một đối tượng JSON duy nhất có 3 trường sau:
+        
+        - "title_for_tracking": (Tóm tắt chủ đề để theo dõi, KHÔNG hiển thị ra ngoài MXH)
+        - "af_link": (Chỉ được trả về ${AFFILIATE_LINK})
+        - "content_ready_for_social": (Toàn bộ bài viết hấp dẫn, bao gồm cả CTA và chèn ${AFFILIATE_LINK} vào cuối bài)
+        
+        Hãy tuân thủ nghiêm ngặt chỉ output JSON.`;
 
-        // 1. Định nghĩa System Instruction (Đóng vai)
-        const systemInstruction = `
-            Bạn là một Master AI Agent, chuyên cung cấp các dịch vụ chuyên biệt.
-            - Phản hồi bằng tiếng Việt.
-            - Phản hồi phải trực tiếp, chi tiết, và hữu ích.
-            - Không giải thích về vai trò của bạn hoặc cách bạn hoạt động.
-            - Luôn giữ vai trò của mình trong suốt quá trình phản hồi.
-        `;
-
-        // 2. Định nghĩa Prompt (Yêu cầu) theo từng công cụ
-        let userPrompt;
-        let model = "gemini-2.5-flash"; // Model mặc định
-
-        switch (tool) {
-            case "Tool 1: SEO Title":
-                userPrompt = `Bạn là một chuyên gia SEO/Content. Hãy viết 10 tiêu đề bài viết (Headline) hấp dẫn, độc đáo, giật tít để đạt thứ hạng cao trên Google và thu hút người đọc dựa trên chủ đề sau: "${prompt}"`;
-                break;
-            case "Tool 2: Summary":
-                userPrompt = `Bạn là một biên tập viên. Hãy tóm tắt ngắn gọn và chính xác bài viết sau, giữ nguyên ý chính và loại bỏ chi tiết thừa: "${prompt}"`;
-                break;
-            case "Tool 3: Rephrase":
-                userPrompt = `Bạn là một nhà văn chuyên nghiệp. Hãy viết lại nội dung sau đây một cách mượt mà, sáng tạo và chuyên nghiệp hơn, giữ nguyên ý nghĩa gốc: "${prompt}"`;
-                break;
-            case "Tool 4: Zodiac":
-                userPrompt = `Bạn là một nhà chiêm tinh học. Dựa trên ngày sinh "${prompt}", hãy xác định cung hoàng đạo và cung cấp một phân tích chi tiết về vận mệnh, tình duyên, công việc cho tuần tới của họ.`;
-                break;
-            case "Tool 5: Tarot Reading":
-                userPrompt = `Bạn là một người đọc Tarot. Hãy rút ba lá bài Tarot (Quá khứ, Hiện tại, Tương lai) để trả lời câu hỏi sau: "${prompt}". Giải thích ý nghĩa của mỗi lá bài và đưa ra lời khuyên tổng thể.`;
-                break;
-            case "Tool 6: XMAS Wishes":
-                // prompt là thông tin về người nhận (ví dụ: Ông bà, Anh A)
-                userPrompt = `Bạn là một nhà soạn thảo thư chúc mừng. Hãy viết một lời chúc Giáng sinh ấm áp, chân thành và độc đáo cho ${prompt}. Lời chúc cần dài ít nhất 5 câu.`;
-                break;
-            default:
-                userPrompt = `Hãy trả lời yêu cầu sau: ${prompt}`;
-        }
-
-        // 3. Gọi API Gemini
+        const fullPrompt = `Chủ đề xu hướng: "${promptFromSheet}"`;
+        
+        // 4. Gọi Gemini API
         const response = await ai.models.generateContent({
-            model: model,
-            contents: [{ role: "user", parts: [{ text: userPrompt }] }],
+            model: "gemini-2.5-flash", 
+            contents: fullPrompt,
             config: {
                 systemInstruction: systemInstruction,
-                temperature: 0.7, // Độ sáng tạo
+                responseMimeType: "application/json", // Bắt buộc output JSON
             },
         });
+        
+        // 5. Phân tích Output
+        const jsonText = response.text.trim();
+        const articleData = JSON.parse(jsonText);
+        
+        // 6. Gửi Dữ liệu đến Make.com (Bot ORION)
+        const makeResponse = await fetch(MAKE_WEBHOOK_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(articleData),
+        });
 
-        // 4. Trả về kết quả cho client
+        // 7. Hoàn tất quá trình
         return {
             statusCode: 200,
-            body: JSON.stringify({ result: response.text }),
+            body: JSON.stringify({ 
+                status: 'Success', 
+                message: 'Content generated and sent to Make.com',
+                make_response: makeResponse.status,
+                title: articleData.title_for_tracking
+            }),
         };
 
     } catch (error) {
-        console.error("Gemini API Error:", error);
+        console.error('LỖI LỚN TRONG PYTHIA:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Internal Server Error or Gemini API failed to respond." }),
+            body: JSON.stringify({ 
+                status: 'Error', 
+                message: 'Lỗi xử lý nội dung', 
+                details: error.message 
+            }),
         };
     }
 };
+
