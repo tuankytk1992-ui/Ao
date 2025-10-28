@@ -1,20 +1,14 @@
-// File: netlify/functions/generate.js (Bot PYTHIA 2.1)
 // Cần GEMINI_API_KEY trong Netlify Environment Variables
-
 const { GoogleGenAI } = require('@google/genai');
 const fetch = require('node-fetch');
 
-// Lấy Webhook URL từ Make.com mà Chủ nhân đã xác nhận
-const MAKE_WEBHOOK_URL = 'https://hook.eu2.make.com/akqiouamk0495qep8c4xl3rmp27s8bbd';
+// 💡 ĐÃ CẬP NHẬT WEBHOOK MỚI CỦA CHỦ NHÂN (DailyAI)
+const MAKE_WEBHOOK_URL = 'Https://hook.eu2.make.com/pqg839ưl3hxfny9nkfrowar9an724ipc';
 
-// Khởi tạo Gemini AI Client
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-// Link Affiliate KIẾM TIỀN CHỦ ĐỘNG
-const AFFILIATE_LINK = 'https://link-kiem-tien-cua-chu-nhan-tai-day.com/affiliate';
+// 💡 ĐÃ CẬP NHẬT: TẠM THỜI DÙNG LINK FANPAGE ĐỂ TĂNG TƯƠNG TÁC
+const AFFILIATE_LINK = 'https://www.facebook.com/Gaixinhdanang'; 
 
 exports.handler = async (event, context) => {
-    // 1. Kiểm tra Method
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -23,7 +17,6 @@ exports.handler = async (event, context) => {
     }
 
     try {
-        // 2. Lấy Prompt từ Google Sheets (dưới dạng JSON)
         const data = JSON.parse(event.body);
         const promptFromSheet = data.prompt;
 
@@ -34,8 +27,9 @@ exports.handler = async (event, context) => {
             };
         }
         
-        // 3. TẠO PROMPT GỬI ĐẾN GEMINI
-        const systemInstruction = `Bạn là một chuyên gia viết nội dung kiếm tiền online. Nhiệm vụ của bạn là viết một bài đăng Facebook cực kỳ thu hút, dựa trên chủ đề xu hướng. Bài viết PHẢI HẤP DẪN, GÂY TÒ MÒ, và KHÔNG được vượt quá 350 từ. CUỐI BÀI viết phải có LỜI KÊU GỌI HÀNH ĐỘNG (CTA) rõ ràng, hướng người đọc đến Link Affiliate.
+        const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+        
+        const systemInstruction = `Bạn là một chuyên gia viết nội dung kiếm tiền online. Nhiệm vụ của bạn là viết một bài đăng Facebook cực kỳ thu hút, dựa trên chủ đề xu hướng. Bài viết PHẢI HẤP DẪN, GÂY TÒ MÒ, và KHÔNG được vượt quá 350 từ. CUỐI BÀI viết phải có LỜI KÊU GỌI HÀNH ĐỘNG (CTA) rõ ràng, hướng người đọc đến Link Fanpage mới.
         
         Bạn chỉ được phép trả về nội dung dưới dạng một đối tượng JSON duy nhất có 3 trường sau:
         
@@ -47,21 +41,18 @@ exports.handler = async (event, context) => {
 
         const fullPrompt = `Chủ đề xu hướng: "${promptFromSheet}"`;
         
-        // 4. Gọi Gemini API
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash", 
             contents: fullPrompt,
             config: {
                 systemInstruction: systemInstruction,
-                responseMimeType: "application/json", // Bắt buộc output JSON
+                responseMimeType: "application/json",
             },
         });
         
-        // 5. Phân tích Output
         const jsonText = response.text.trim();
         const articleData = JSON.parse(jsonText);
         
-        // 6. Gửi Dữ liệu đến Make.com (Bot ORION)
         const makeResponse = await fetch(MAKE_WEBHOOK_URL, {
             method: 'POST',
             headers: {
@@ -70,7 +61,6 @@ exports.handler = async (event, context) => {
             body: JSON.stringify(articleData),
         });
 
-        // 7. Hoàn tất quá trình
         return {
             statusCode: 200,
             body: JSON.stringify({ 
@@ -93,4 +83,3 @@ exports.handler = async (event, context) => {
         };
     }
 };
-
