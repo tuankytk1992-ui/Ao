@@ -1,11 +1,7 @@
 [build]
-  # BỎ TRỐNG LỆNH BUILD
-  command = ""
-  # BỎ TRỐNG THƯ MỤC PUBLIC
-  publish = ""
+command = ""
+publish = ""
 
 [functions]
-  # ĐƯỜNG DẪN ĐẾN FUNCTIONS
-  directory = "netlify/functions"
-  # Thời gian timeout cho Function
-  timeout = 10
+directory = "netlify/functions"
+timeout = 10
