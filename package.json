@@ -1,22 +1,19 @@
 {
-  "name": "cygnus-v3-headless",
+  "name": "bot-pythia-headless",
   "version": "1.0.0",
-  "description": "Gemini AI Headless Content Generator for Make.com",
+  "description": "Bot PYTHIA AI Headless Content Generator",
   "main": "netlify/functions/generate.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "gemini",
-    "ai",
-    "netlify",
-    "make"
+    "Gemini",
+    "Netlify",
+    "Make"
   ],
   "dependencies": {
-    "@google/genai": "^0.1.0",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "2.7.0"
   },
-  "devDependencies": {},
   "author": "",
   "license": "ISC"
 }
