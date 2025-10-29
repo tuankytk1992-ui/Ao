@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Bot PYTHIA AI Headless Content Generator",
   "main": "netlify/functions/generate.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "Netlify",
     "Make"
