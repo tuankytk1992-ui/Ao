@@ -1,6 +1,11 @@
 [build]
-command = "npm install" 
-publish = "public"
-  
+  # BỎ TRỐNG LỆNH BUILD
+  command = ""
+  # BỎ TRỐNG THƯ MỤC PUBLIC
+  publish = ""
+
 [functions]
-directory = "netlify/functions"
+  # ĐƯỜNG DẪN ĐẾN FUNCTIONS
+  directory = "netlify/functions"
+  # Thời gian timeout cho Function
+  timeout = 10
